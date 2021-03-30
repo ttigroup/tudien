@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <style>
+        * {
+    box-sizing: border-box;
+  }
+  
+  #myInput {
+    /* background-image: url('/css/searchicon.png'); */
+    display: flex;
+    flex-direction: column;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+  
+  #myTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    background-color: white;
+  }  
+  #myTable th, #myTable td {
+    text-align: left;
+    padding: 2px;
+  }  
+  #myTable tr {
+    border-bottom: 1px solid #00cc99;
+  }  
+  #myTable tr.header, #myTable tr:hover {
+    background-color: darkcyan;
+  }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <!-- <select name="" id="from">
+        <option value="eng">English</option>
+        <option value="vie">Vietnamese</option>
+    </select>
+    <select name="" id="to">
+        From
+        <option value="vie">Vietnamese</option>
+        <option value="eng">English</option>
+    </select> -->
+    <input type="text" id="myInput" placeholder="Search for word.." title="Type in a word" />
+    <table cellpadding="2" cellspacing="2" border="0" bgcolor="#dfdfdf" width="100%" align="center">
+        <thead>
+            <tr>
+                <th width="50%">English</th>
+                <th width="50%">Vietnamese</th>
+                <!-- <th width="12%">Status</th> -->
+            </tr>
+        </thead>
+        <tbody id="myTable"></tbody>
+    </table>
+    <script language="javascript">
+        window.addEventListener("load", function(){
+    // (A) DUMMY ARRAY
+    var mainObj = [
+    { eng: "Auxiliary clearance angle " ,vie: "góc sau phụ" },
+{ eng: "Auxiliary plane angle " ,vie: "góc nghiêng phụ (j1)" },
+{ eng: "Auxilary cutting edge = end cut edge " ,vie: "lưỡi cắt phụ" },
+{ eng: "Angle " ,vie: "Dao phay góc" },
+{ eng: "Automatic lathe" ,vie: "Máy tiện tự động" },
+{ eng: "Built up edge (BUE) " ,vie: "lẹo dao" },
+{ eng: "Board turning tool " ,vie: "dao tiện tinh rộng bản" },
+{ eng: "Boring tool " ,vie: "dao tiện (doa) lỗ" },
+{ eng: "Bent-tail dog" ,vie: "Tốc chuôi cong" },
+{ eng: "Bench lathe" ,vie: "Máy tiện để bàn" },
+{ eng: "Chief angles " ,vie: "các góc chính " },
+{ eng: "Chip " ,vie: "Phoi" },
+{ eng: "Clearance angle" ,vie: "góc sau" },
+{ eng: "Cutting angle " ,vie: "góc cắt (d)" },
+{ eng: "Cutting –off tool, parting tool " ,vie: "dao tiện cắt đứt" },
+{ eng: "Chamfer tool " ,vie: "dao vát mép" },
+{ eng: "Cutting fluid = coolant " ,vie: "dung dịch trơn nguội" },
+{ eng: "Cutting speed " ,vie: "tốc độ cắt" },
+{ eng: "Cross feed " ,vie: "chạy dao ngang" },
+{ eng: "Cross slide " ,vie: "Bàn trượt ngang" },
+{ eng: "Compound slide" ,vie: "Bàn trượt hỗn hợp" },
+{ eng: "Camshaft lathe" ,vie: "Máy tiện trục cam" },
+{ eng: "Cutting –off lathe" ,vie: "Máy tiện cắt đứt" },
+{ eng: "Chuck" ,vie: "Mâm cặp" },
+{ eng: "Cylindrical milling cutter " ,vie: "Dao phay mặt trụ" },
+{ eng: "Disk-type milling cutter " ,vie: "Dao phay đĩa" },
+{ eng: "Dead center" ,vie: "Mũi tâm chết (cố định)" },
+{ eng: "Dog plate" ,vie: "Mâm cặp tốc" },
+{ eng: "Dove-tail milling cutter " ,vie: "Dao phay rãnh đuôi én" },
+{ eng: "End mill " ,vie: "Dao phay ngón" },
+{ eng: "Flank " ,vie: "mặt sau" },
+{ eng: "Face " ,vie: "mặt trước" },
+{ eng: "Facing tool " ,vie: "dao tiện mặt đầu" },
+{ eng: "Finishing turning tool " ,vie: "dao tiện tinh" },
+{ eng: "Feed (gear) box" ,vie: "Hộp chạy dao" },
+{ eng: "Feed shaft" ,vie: "Trục chạy dao" },
+{ eng: "Face milling cutter " ,vie: "Dao phay mặt đầu" },
+{ eng: "Form-relieved tooth " ,vie: "Răng dạng hớt lưng" },
+{ eng: "Follower rest" ,vie: "Luy nét di động" },
+{ eng: "Gang milling cutter " ,vie: "Dao phay tổ hợp" },
+{ eng: "Hand wheel" ,vie: "Tay quay" },
+{ eng: "Inserted-blade milling cutter " ,vie: "Dao phay răng ghép" },
+{ eng: "Inserted blade " ,vie: "Răng ghép" },
+{ eng: "Jaw" ,vie: "Chấu kẹp" },
+{ eng: "Key-seat milling cutter " ,vie: "Dao phay rãnh then" },
+{ eng: "Lip angle " ,vie: "góc sắc (b)" },
+{ eng: "Lathe dog " ,vie: "Tốc máy tiện" },
+{ eng: "Lathe bed " ,vie: "Băng máy" },
+{ eng: "Longitudinal feed " ,vie: "chạy dao dọc" },
+{ eng: "Left/right hand cutting tool " ,vie: "dao tiện trái/phải" },
+{ eng: "Lead screw" ,vie: "Trục vít me" },
+{ eng: "Lathe center" ,vie: "Mũi tâm" },
+{ eng: "milling cutter " ,vie: "Dao phay" },
+{ eng: "Machined surface " ,vie: "bề mặt đã gia công" },
+{ eng: "Main spindle" ,vie: "Trục chính" },
+{ eng: "Nose " ,vie: "mũi dao" },
+{ eng: "Nose radius " ,vie: "bán kính mũi dao" },
+{ eng: "Plain milling cutter " ,vie: "Dao phay đơn" },
+{ eng: "Plane approach angle " ,vie: "góc nghiêng chính (j)" },
+{ eng: "Plane point angle " ,vie: "góc mũi dao (e)" },
+{ eng: "Pointed turning tool " ,vie: "dao tiện tinh đầu nhọn" },
+{ eng: "Profile turning tool " ,vie: "dao tiện định hình" },
+{ eng: "Profile-turing lathe" ,vie: "Máy tiện chép hình" },
+{ eng: "Righ-hand milling cutter " ,vie: "Dao phay răng xoắn phải" },
+{ eng: "Rake angle " ,vie: "góc trước" },
+{ eng: "Roughing turning tool " ,vie: "dao tiện thô" },
+{ eng: "Rest" ,vie: "Luy nét" },
+{ eng: "Rotaring center" ,vie: "Mũi tâm quay" },
+{ eng: "Relieving lathe" ,vie: "Máy tiện hớt lưng" },
+{ eng: "Straight turning tool " ,vie: "dao tiện đầu thẳng" },
+{ eng: "Saddle" ,vie: "Bàn trượt" },
+{ eng: "Speed box" ,vie: "Hộp tốc độ" },
+{ eng: "Steady rest" ,vie: "Luy nét cố định" },
+{ eng: "Semiautomatic lathe" ,vie: "Máy tiện bán tự động" },
+{ eng: "Screw/Thread-cutting lathe" ,vie: "Máy tiện ren" },
+{ eng: "Sliting saw, circular saw " ,vie: "Dao phay cắt đứt" },
+{ eng: "Single-angle milling cutter " ,vie: "Dao phay góc đơn" },
+{ eng: "Shank-type cutter " ,vie: "Dao phay ngón" },
+{ eng: "Slot milling cutter " ,vie: "Dao phay rãnh" },
+{ eng: "Tool " ,vie: "dụng cụ, dao" },
+{ eng: "Tool life " ,vie: "tuổi thọ của dao" },
+{ eng: "Thread tool " ,vie: "dao tiện ren" },
+{ eng: "Tool holder" ,vie: "Đài dao" },
+{ eng: "Turret" ,vie: "Đầu rơ-vôn-ve" },
+{ eng: "Turret lathe" ,vie: "Máy tiện rơ-vôn-ve" },
+{ eng: "T-slot cutter " ,vie: "Dao phay rãnh chữ T" },
+{ eng: "Wood lathe " ,vie: "Máy tiện gỗ" },
+{ eng: "Assembly jigs" ,vie: "đồ gá lắp ráp" },
+{ eng: "Automatic line" ,vie: "dây chuyền tự động" },
+{ eng: "abrasive wear" ,vie: "sự mòn do mài" },
+{ eng: "abrasive machine" ,vie: "máy gia công mài" },
+{ eng: "arc weld" ,vie: "hàn hồ quang" },
+{ eng: "Lathe bed" ,vie: "Băng máy " },
+{ eng: "Lathe dog" ,vie: "Tốc máy tiện " },
+{ eng: "lathe" ,vie: "máy tiện" },
+{ eng: "Cross slide" ,vie: "Bàn trượt ngang " },
+{ eng: "Carriage" ,vie: "Bàn xe dao " },
+{ eng: "Compound slide" ,vie: "Bàn trượt hỗn hợp " },
+{ eng: "Tailstock" ,vie: "Ụ sau " },
+{ eng: "Saddle" ,vie: "Bàn trượt " },
+{ eng: "Tool holder" ,vie: "Đài dao " },
+{ eng: "Headstock" ,vie: "Ụ trước" },
+{ eng: "Speed box" ,vie: "Hộp tốc độ " },
+{ eng: "Dividing head" ,vie: "Ụ phân độ" },
+{ eng: "Lead screw" ,vie: "Trục vít me " },
+{ eng: "Feed (gear) box" ,vie: "Hộp chạy dao " },
+{ eng: "Feed shaft" ,vie: "Trục chạy dao " },
+{ eng: "Lead screw" ,vie: "Trục vít me " },
+{ eng: "Chuck" ,vie: "Mâm cặp " },
+{ eng: "Main spindle" ,vie: "Trục chính " },
+{ eng: "Four- jaw chuck" ,vie: "Mâm cặp 4 chấu " },
+{ eng: "Three- jaw chuck" ,vie: "Mâm cặp 3 chấu " },
+{ eng: "Jaw" ,vie: "Chấu kẹp " },
+{ eng: "Steady rest" ,vie: "Luy nét cố định " },
+{ eng: "Rest" ,vie: "Luy nét " },
+{ eng: "Hand wheel" ,vie: "Tay quay " },
+{ eng: "Follower rest" ,vie: "Luy nét di động " },
+{ eng: "Lathe center" ,vie: "Mũi tâm " },
+{ eng: "Hand wheel" ,vie: "Tay quay " },
+{ eng: "Dead center" ,vie: "Mũi tâm chết (cố định) " },
+{ eng: "Dog plate" ,vie: "Mâm cặp tốc " },
+{ eng: "Rotaring center" ,vie: "Mũi tâm quay " },
+{ eng: "Face plate" ,vie: "Mâm cặp hoa mai " },
+{ eng: "Bent- tail dog" ,vie: "Tốc chuôi cong " },
+{ eng: "wheel shape" ,vie: "dạng đá mài" },
+{ eng: "wheel" ,vie: "bánh xe" },
+{ eng: "work head" ,vie: "đầu làm việc" },
+{ eng: "wheel tractor" ,vie: "máy kéo bánh hơi" },
+{ eng: "work support arm" ,vie: "cần chống" },
+{ eng: "work rest blade" ,vie: "thanh tựa" },
+{ eng: "Workpiece" ,vie: "chi tiết gia công, phôi" },
+{ eng: "work surface" ,vie: "Bề mặt gia công" },
+{ eng: "workholder retainer" ,vie: "mâm kẹp phôi" },
+{ eng: "Gauging fixture" ,vie: "đồ gá kiểm tra" },
+{ eng: "wrench opening " ,vie: "đầu mở miệng, đầu khoá" },
+{ eng: "Milling fixture" ,vie: "đồ gá phay" },
+{ eng: "Boring fixture" ,vie: "đồ gá khoan, đồ gá doa" },
+{ eng: "Work fixture" ,vie: "đồ gá kẹp chặt" },
+{ eng: "Milling fixture" ,vie: "đồ gá phay" },
+{ eng: "high- speed steelcutting tool" ,vie: "dụng cụ cắt bằng thép gió" },
+{ eng: "bolt" ,vie: "bu-lông" },
+{ eng: "screw" ,vie: "vít" },
+{ eng: "perspective projection" ,vie: "phép chiếu phối cảnh" },
+{ eng: "parallel projection" ,vie: "Phép chiếu song song" },
+{ eng: "oblique projection" ,vie: "phép chiếu xiên" },
+{ eng: "orthographic projection" ,vie: "phép chiếu trực giao hay chiếu vuông góc" },
+{ eng: "top view" ,vie: "hình chiếu bằng " },
+{ eng: "front view" ,vie: "hình chiếu đứng " },
+{ eng: "Projection plane" ,vie: "Mặt phẳng chiếu" },
+{ eng: "side view" ,vie: "hình chiếu cạnh" },
+{ eng: "Cutting theory" ,vie: "Nguyên lý cắt" },
+{ eng: "Manufacturing automation" ,vie: "Tự động hóa sản xuất" },
+{ eng: "Labour safety" ,vie: "An toàn lao động" },
+{ eng: "Electrical installations" ,vie: "trang thiết bị điện" },
+{ eng: "Design Automation" ,vie: "Tự động hóa thiết kế" },
+{ eng: "adapter plate unit" ,vie: "bộ gắn đầu tiêu chuẩn" },
+{ eng: "abrasive belt" ,vie: "băng tải gắn bột mài" },
+{ eng: "amplifier" ,vie: "bộ khuyếch đại" },
+{ eng: "feed selector" ,vie: "bộ điều chỉnh lượng ăn dao" },
+{ eng: "aerodynamic controller" ,vie: "bộ kiểm soát khí động lực" },
+{ eng: "inductance-type pick-up" ,vie: "bộ phát kiểu cảm kháng" },
+{ eng: "audio oscillator" ,vie: "bộ dao động âm thanh" },
+{ eng: "adjustable support" ,vie: "gối tựa điều chỉnh" },
+{ eng: "apron" ,vie: "tấm chắn" },
+{ eng: "aileron" ,vie: "cánh phụ cân bằng" },
+{ eng: "bed shaper" ,vie: "băng may" },
+{ eng: "arbor support" ,vie: "ổ đỡ trục" },
+{ eng: "drill chuck" ,vie: "đầu kẹp mũi khoan" },
+{ eng: "camshaft" ,vie: "trục cam" },
+{ eng: "electric- contact gaugehead" ,vie: "đầu đo điện tiếp xúc" },
+{ eng: "drivig pin" ,vie: "chốt xoay" },
+{ eng: "end mill" ,vie: "dao phay mặt đầu" },
+{ eng: "elevator" ,vie: "cánh nâng" },
+{ eng: "expansion reamer" ,vie: "dao chuôt nong rộng" },
+{ eng: "end support" ,vie: "giá đỡ phía sau" },
+{ eng: "feed shaft" ,vie: "trục chạy dao" },
+{ eng: "facing tool" ,vie: "dao tiện mặt đầu" },
+{ eng: "fixed support" ,vie: "gối tựa cố định" },
+{ eng: "form tool" ,vie: "dao định hình" },
+{ eng: "front fender, mudguard" ,vie: "chắn bùn trước" },
+{ eng: "index crank" ,vie: "thanh chia" },
+{ eng: "jet" ,vie: "ống phản lực" },
+{ eng: "hob slide" ,vie: "bàn trượt dao" },
+{ eng: "jib" ,vie: "băng tải" },
+{ eng: " key- seat milling cutter" ,vie: "dao phay răng then" },
+{ eng: "frontal plane of projection" ,vie: "mặt phẳng chính diện" },
+{ eng: "left- hand milling cutter" ,vie: "dao phay chiều trái" },
+{ eng: "magazine" ,vie: "nơi trữ phôi" },
+{ eng: "change gear train" ,vie: "truyền động đổi rãnh" },
+{ eng: "motor fan" ,vie: "quạt máy động cơ" },
+{ eng: "adjusttable wrench" ,vie: "mỏ lết" },
+{ eng: "contact roll" ,vie: "con lăn tiếp xúc" },
+{ eng: "lathe" ,vie: "máy tiện" },
+{ eng: "engine lathe" ,vie: "máy tiện ren" },
+{ eng: "circular sawing machine" ,vie: "máy cưa vòng" },
+{ eng: "CNC vertical machine" ,vie: "máy phay đứng CNC" },
+{ eng: "CNC machine tool" ,vie: "máy công cụ điều khiển số" },
+{ eng: "abrasive slurry" ,vie: "bùn sệt mài" },
+{ eng: "abrasive belt" ,vie: "băng tải gắn bột mài" },
+{ eng: "burnisher" ,vie: "dụng cụ mài bóng" },
+{ eng: "grinding machine" ,vie: "máy mài" },
+{ eng: "multi-rib grinding wheel" ,vie: "bánh mài nhiều ren" },
+{ eng: "mounting of grinding wheel" ,vie: "gá lắp đá mài" },
+{ eng: "Preventive maintenance" ,vie: "bảo trì phòng ngừa" },
+{ eng: "Breakdown maintenance/ Operation to Break Down/  OTBD" ,vie: "bảo trì khi có hư hỏng" },
+{ eng: "Predictive maintenance" ,vie: "bảo trì dự đoán" },
+{ eng: "Periodic maintenance /Time based maintenance /TBM / Fixed Time Maintenance-FTM)" ,vie: "bảo trì định kỳ" },
+{ eng: "Lean Maintenance" ,vie: "Bảo trì tinh gọn" },
+{ eng: "Corrective maintenance" ,vie: "bảo trì khắc phục hay bảo trì hiệu chỉnh" },
+{ eng: "Condition Based Maintenance (CBM)" ,vie: "bảo trì dựa trên tình trạng thiết bị" },
+{ eng: "Design Out Maintenance, DOM" ,vie: "bảo trì thiết kế lại" },
+{ eng: "Proactive Maintenance" ,vie: "bảo trì tiên phong" },
+{ eng: "Life Time Extention, LTE" ,vie: "bảo trì kéo dài tuổi thọ" },
+{ eng: "Reliability Center Maint (RCM)" ,vie: "bảo trì tập trung vào độ tin cậy" },
+{ eng: "Total Productive Maint (TPM) " ,vie: "Bảo trì năng suất toàn bộ hay toàn diện hay tổng thể" },
+{ eng: "Risk Based Maintenance (RBM)" ,vie: "Bảo trì dựa trên rủi ro" },
+{ eng: "Plant Shutdown & Turnaround Planning" ,vie: "lập kế hoạch ngừng máy cho bảo trì toàn nhà máy" },
+{ eng: "Operator Maintenance" ,vie: "bảo trì có sự tham gia nhân viên vận hành" },
+{ eng: "Bore size" ,vie: "Đường kính trong xi lanh" },
+{ eng: "Odering code:" ,vie: "Mã đặt hàng" },
+{ eng: "Mounting code" ,vie: "Mã lắp ghép" },
+{ eng: "Cylinder seal kit" ,vie: "Gioăng, phốt xi lanh" },
+{ eng: "Rod End Clevis" ,vie: "Kiểu lắp đầu xy-lanh hình chữ U (RC)" },
+{ eng: "Rod End Tang" ,vie: " Kiểu lắp đầu xy-lanh khớp trụ (RT)" },
+{ eng: "Stroke up to any practical length" ,vie: " Hành trình làm việc theo yêu cầu" },
+{ eng: "Cap End Tang" ,vie: " Kiểu lắp đuôi xy-lanh khớp trụ (ET)" },
+{ eng: "Double acting/Single acting" ,vie: "Xi lanh cần đôi/xi lanh cần đơn" },
+{ eng: "Rod End Flange" ,vie: "Kiểu lắp đầu xy-lanh bích hình vuông (RF)" },
+{ eng: "Rod End Spherical Bearing" ,vie: "Kiểu lắp đầu xy-lanh khớp cầu (RB)" },
+{ eng: "Cross Tube" ,vie: "Kiểu lắp dạng ống trụ tròn (CT)" },
+{ eng: "Directional control valve" ,vie: "Van phân phối" },
+{ eng: "Cownter balance valve" ,vie: "Van đối trọng" },
+{ eng: "Logic valve" ,vie: "Van logic" },
+{ eng: "Mounting Style" ,vie: "Mã lắp ghép đuôi xi lanh" },
+
+
+   ]; 
+      var k = '<tbody>'
+    for(i = 0;i < mainObj.length; i++){
+        k+= '<tr>';
+        k+= '<td>' + mainObj[i].eng + '</td>';
+        k+= '<td>' + mainObj[i].vie + '</td>';
+        // k+= '<td>' + mainObj[i].status + '</td>';
+        k+= '</tr>';
+    }
+    k+='</tbody>';
+    document.getElementById('myTable').innerHTML = k;
+   //FILTER TABEL  
+  });
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                console.log(value);
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

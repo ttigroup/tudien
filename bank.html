@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <style>
+        * {
+    box-sizing: border-box;
+  }
+  
+  #myInput {
+    /* background-image: url('/css/searchicon.png'); */
+    display: flex;
+    flex-direction: column;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+  
+  #myTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    background-color: white;
+  }  
+  #myTable th, #myTable td {
+    text-align: left;
+    padding: 2px;
+  }  
+  #myTable tr {
+    border-bottom: 1px solid #00cc99;
+  }  
+  #myTable tr.header, #myTable tr:hover {
+    background-color: darkcyan;
+  }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <!-- <select name="" id="from">
+        <option value="eng">English</option>
+        <option value="vie">Vietnamese</option>
+    </select>
+    <select name="" id="to">
+        From
+        <option value="vie">Vietnamese</option>
+        <option value="eng">English</option>
+    </select> -->
+    <input type="text" id="myInput" placeholder="Search for word.." title="Type in a word" />
+    <table cellpadding="2" cellspacing="2" border="0" bgcolor="#dfdfdf" width="100%" align="center">
+        <thead>
+            <tr>
+                <th width="50%">English</th>
+                <th width="50%">Vietnamese</th>
+                <!-- <th width="12%">Status</th> -->
+            </tr>
+        </thead>
+        <tbody id="myTable"></tbody>
+    </table>
+    <script language="javascript">
+        window.addEventListener("load", function(){
+    // (A) DUMMY ARRAY
+    var mainObj = [{ eng: "Commercial Bank" ,vie: "Ngân hàng thương mại" },
+{ eng: "Investment Bank" ,vie: "Ngân hàng đầu tư" },
+{ eng: "Retailed bank" ,vie: "Ngân hàng bán lẻ" },
+{ eng: "Central Bank" ,vie: "Ngân hàng trung tâm" },
+{ eng: "Internet Bank" ,vie: "Ngân hàng trực tuyến" },
+{ eng: "Regional Bank" ,vie: "Ngân hàng khu vực" },
+{ eng: "Supermarket Bank" ,vie: "Ngân hàng siêu thị" },
+{ eng: "Multinational Bank" ,vie: "Ngân hàng đa quốc gia" },
+{ eng: "Bank account" ,vie: "Tài khoản ngân hàng" },
+{ eng: "Personal account" ,vie: "Tài khoản cá nhân" },
+{ eng: "Current account " ,vie: "Tài khoản vãng lai" },
+{ eng: "Checking account" ,vie: "" },
+{ eng: "Deposit account" ,vie: "Tài khoản tiền gửi" },
+{ eng: "Saving account" ,vie: "Tài khoản tiết kiệm" },
+{ eng: "Fixed account" ,vie: "Tài khoản có kỳ hạn" },
+{ eng: "Business account" ,vie: "Tài khoản doanh nghiệp" },
+{ eng: "Joint account" ,vie: "Tài khoản chung" },
+{ eng: "Credit card" ,vie: "Thẻ tín dụng" },
+{ eng: "Debit card" ,vie: "Thẻ tín dụng" },
+{ eng: "Charge card" ,vie: "Thẻ thanh toán" },
+{ eng: "Prepaid card" ,vie: "Thẻ trả trước" },
+{ eng: "Check guarantee card" ,vie: "Thẻ đảm bảo" },
+{ eng: "Visa " ,vie: "Thẻ visa / mastercard " },
+{ eng: "Master card" ,vie: "" },
+{ eng: "Accommodation bill" ,vie: "Hối phiếu khống" },
+{ eng: "Accommodation finance" ,vie: "Tài trợ khống" },
+{ eng: "Additional service" ,vie: "Dịch vụ bổ sung" },
+{ eng: "Account holder" ,vie: "Chủ tài khoản" },
+{ eng: "Accumulated reserve" ,vie: "Nguồn tiền được tích lũy" },
+{ eng: "Adverse change" ,vie: "Thay đổi bất lợi" },
+{ eng: "Analyse" ,vie: "Phân tích" },
+{ eng: "Annual interest rate" ,vie: "Lãi suất thường niên" },
+{ eng: "Asset" ,vie: "Tài sản" },
+{ eng: "Asset finance" ,vie: "Tài trợ cho vay tài sản đảm bảo" },
+{ eng: "Auditor" ,vie: "Kiểm toán viên" },
+{ eng: "Authorise " ,vie: "Cấp phép" },
+{ eng: "Bad debt" ,vie: "Nợ xấu" },
+{ eng: "Bank loan" ,vie: "Khoản vay ngân hàng" },
+{ eng: "Banker’s draft" ,vie: "Hối phiếu ngân hàng" },
+{ eng: "Banking market" ,vie: "Thị trường ngân hàng" },
+{ eng: "Banking code" ,vie: "Mã ngân hàng" },
+{ eng: "Bankrupt" ,vie: "Phá sản" },
+{ eng: "Bailout Package" ,vie: "Gói cứu trợ" },
+{ eng: "Balance sheet" ,vie: "Bảng cân đối" },
+{ eng: "Base rate" ,vie: "Lãi suất cơ bản" },
+{ eng: "Be in dept" ,vie: "Nợ" },
+{ eng: "Bearer cheque" ,vie: "Séc vô danh" },
+{ eng: "Book keeping" ,vie: "Kế toán" },
+{ eng: "Bill" ,vie: "Hóa đơn" },
+{ eng: "Budget" ,vie: "Dự toán ngân sách" },
+{ eng: "Cash" ,vie: "Tiền mặt" },
+{ eng: "Card" ,vie: "Thẻ" },
+{ eng: "Cheque" ,vie: "Séc" },
+{ eng: "Cheque book" ,vie: "Sổ séc" },
+{ eng: "Cheque clearing" ,vie: "Sự thanh toán séc" },
+{ eng: "Counterfoil" ,vie: "Cuống séc" },
+{ eng: "Compensation" ,vie: "Sự đền bù" },
+{ eng: "Consumer banking" ,vie: "Dịch vụ cho khách hàng tiêu dùng" },
+{ eng: "Counter" ,vie: "Quầy thu ngân" },
+{ eng: "Code word " ,vie: "Ký hiệu mật" },
+{ eng: "Confidential " ,vie: "Bí mật" },
+{ eng: "Contract " ,vie: "Hợp đồng" },
+{ eng: "Correspondent" ,vie: "Ngân hàng có quan hệ đại lý" },
+{ eng: "Credit limit" ,vie: "Hạn mức tín dụng" },
+{ eng: "Cash flow" ,vie: "Dòng tiền" },
+{ eng: "Cash book" ,vie: "Sổ quỹ" },
+{ eng: "Credit arrangement" ,vie: "Dàn xếp cho nợ" },
+{ eng: "Credit control" ,vie: "Kiểm soát tín dụng" },
+{ eng: "Credit management" ,vie: "Quản lý tín dụng" },
+{ eng: "Credit check" ,vie: "Kiểm soát tín dụng" },
+{ eng: "Credit crunch" ,vie: "Thắt chặt tín dụng" },
+{ eng: "Credit history" ,vie: "Lịch sử tín dụng" },
+{ eng: "Credit period" ,vie: "Kỳ hạn tín dụng" },
+{ eng: "Credit rating" ,vie: "Đánh giá tín dụng" },
+{ eng: "Credit status" ,vie: "Mức độ tín nhiệm" },
+{ eng: "Credit worthiness" ,vie: "Thực trạng tín dụng" },
+{ eng: "Cross cheque" ,vie: "Séc thanh toán bằng chuyển khoản" },
+{ eng: "Current cost" ,vie: "Chi phí hiện thời" },
+{ eng: "Debt" ,vie: "Khoản nợ" },
+{ eng: "Debtor" ,vie: "Con nợ" },
+{ eng: "Decode" ,vie: "Giải mã" },
+{ eng: "Default" ,vie: "Trả nợ không đúng hạn" },
+{ eng: "Discount market" ,vie: "Thị trường chiết khấu" },
+{ eng: "Draft" ,vie: "Hối phiếu" },
+{ eng: "Draw" ,vie: "Ký phát" },
+{ eng: "Drawee" ,vie: "Ngân hàng của người ký phát" },
+{ eng: "Direct debit" ,vie: "Ghi nợ trực tiếp" },
+{ eng: "Deposit " ,vie: "Gửi tiền" },
+{ eng: "Depositor" ,vie: "Người gửi tiền" },
+{ eng: "Depreciation" ,vie: "Khấu hao" },
+{ eng: "Entry" ,vie: "Bút toán" },
+{ eng: "Equity" ,vie: "Cổ tức" },
+{ eng: "Exchange" ,vie: "Trao đổi" },
+{ eng: "Exchange profit" ,vie: "Lợi nhuận từ ngoại hối" },
+{ eng: "Exchange risk " ,vie: "Rủi ro trong chuyển đổi" },
+{ eng: "Export finance" ,vie: "Tài trợ xuất khẩu" },
+{ eng: "Export insurance" ,vie: "Bảo hiểm xuất khẩu" },
+{ eng: "Equity research report" ,vie: "Phân tích tài chính doanh nghiệp" },
+{ eng: "Estimated profit" ,vie: "Lợi nhuận ước tính" },
+{ eng: "Foreign currency" ,vie: "Ngoại tệ" },
+{ eng: "Finance risk" ,vie: "Rủi ro tài chính" },
+{ eng: "Financial policy" ,vie: "Chính sách tài chính" },
+{ eng: "Gearing " ,vie: "Vốn vay" },
+{ eng: "Generate " ,vie: "Phát sinh" },
+{ eng: "Good risk " ,vie: "Rủi ro thấp" },
+{ eng: "Home market" ,vie: "Thị trường nội địa" },
+{ eng: "Interest" ,vie: "Lãi" },
+{ eng: "Interest rate" ,vie: "Tỷ lệ lãi suất" },
+{ eng: "Investor" ,vie: "Nhà đầu tư" },
+{ eng: "In word" ,vie: "Bằng chữ" },
+{ eng: "In figure" ,vie: "Bằng số" },
+{ eng: "Inflation " ,vie: "Lạm phát" },
+{ eng: "Lease" ,vie: "Cho thuê" },
+{ eng: "Letter of hypothecation" ,vie: "Thư cầm cố" },
+{ eng: "Liability" ,vie: "Khoản nợ" },
+{ eng: "Leads" ,vie: "Trả tiền trước tránh rủi ro về tỷ giá tiền tệ" },
+{ eng: "Lags" ,vie: "Trả tiền sau kiếm lợi do tỷ giá chuyển đổi" },
+{ eng: "Loan application form" ,vie: "Giấy yêu cầu vay vốn" },
+{ eng: "Loan schedule" ,vie: "Kế hoạch thanh toán khoản vay" },
+{ eng: "Mortgage" ,vie: "Tài sản cầm cố" },
+{ eng: "Open cheque" ,vie: "Séc mở" },
+{ eng: "Offset" ,vie: "Sự bù đắp thiệt hại" },
+{ eng: "Personal loan" ,vie: "Khoản vay cá nhân" },
+{ eng: "Portfolio management" ,vie: "Quản lý đầu tư danh mục" },
+{ eng: "Potential investor" ,vie: "Nhà đầu tư tiềm năng" },
+{ eng: "Proof of identify " ,vie: "Bằng chứng nhận diện" },
+{ eng: "Repayment" ,vie: "Khoản tiền trả lại" },
+{ eng: "Risk " ,vie: "Rủi ro" },
+{ eng: "Staff movements" ,vie: "Sự luân chuyển nhân sự" },
+{ eng: "Stake" ,vie: "Tiền đầu tư / cổ phần" },
+{ eng: "Sight draft " ,vie: "Hối phiếu trả ngay" },
+{ eng: "Sort code" ,vie: "Mã chi nhánh ngân hàng" },
+{ eng: "Surplus" ,vie: "Thặng dư" },
+{ eng: "Toxic asset" ,vie: "Tài sản có tính thanh khoản thấp" },
+{ eng: "Treasuries" ,vie: "Kho bạc" },
+{ eng: "Voucher" ,vie: "Biên lai, chứng từ" },
+{ eng: "Check account: Kiểm tra tài khoản" ,vie: "Kiểm tra tài khoản" },
+{ eng: "Open an account: Mở tài khoản" ,vie: "Mở tài khoản" },
+{ eng: "Set up an account: Thành lập một tài khoản" ,vie: "Thành lập một tài khoản" },
+{ eng: "Make a deposit: Gửi tiền" ,vie: "Gửi tiền" },
+{ eng: "Make a withdraw: Rút tiền" ,vie: "Rút tiền" },
+{ eng: "Check balance: Kiểm tra số dư" ,vie: "Kiểm tra số dư" },
+{ eng: "Receive a statement: Nhận bảng sao kê" ,vie: "Nhận bảng sao kê" },
+{ eng: "Take out a loan: Vay nợ ngân hàng" ,vie: "Vay nợ ngân hàng" },
+{ eng: "Deposit a cheque: Gửi tiền từ séc" ,vie: "Gửi tiền từ séc" },
+{ eng: "Cash a cheque: Rút tiền từ séc" ,vie: "Rút tiền từ séc" },
+{ eng: "Write a cheque: Viết séc" ,vie: "Viết séc" },
+{ eng: "Cancel a cheque: Hủy séc" ,vie: "Hủy séc" },
+{ eng: "Apply for a credit card: Đăng ký thẻ tín dụng" ,vie: "Đăng ký thẻ tín dụng" },
+{ eng: "Pay bills: Thanh toán hóa đơn" ,vie: "Thanh toán hóa đơn" },
+{ eng: "Transfer money: Chuyển khoản" ,vie: "Chuyển khoản" },
+{ eng: "Change money: Đổi tiền    " ,vie: "Đổi tiền    " },
+{ eng: "Make an appointment: Đặt lịch hẹn" ,vie: "Đặt lịch hẹn" },
+{ eng: "Insert your card: Đưa thẻ vào" ,vie: "Đưa thẻ vào" },
+{ eng: "Enter your PIN: Nhập mã PIN" ,vie: "Nhập mã PIN" },
+{ eng: "Incorrect PIN: Mã PIN sai" ,vie: "Mã PIN sai" },
+{ eng: "Enter: Nhập" ,vie: "Nhập" },
+{ eng: "Correct: Đúng" ,vie: "Đúng" },
+{ eng: "Cancel: Hủy" ,vie: "Hủy" },
+{ eng: "Withdraw cash: Rút tiền" ,vie: "Rút tiền" },
+{ eng: "Other amount: Số tiền khác" ,vie: "Số tiền khác" },
+{ eng: "Please wait: Vui lòng đợi" ,vie: "Vui lòng đợi" },
+{ eng: "Your cash is being counted: Đang đếm tiền của bạn" ,vie: "Đang đếm tiền của bạn" },
+{ eng: "Insufficient funds: Không đủ tiền" ,vie: "Không đủ tiền" },
+{ eng: "Balance: Số dư" ,vie: "Số dư" },
+{ eng: "On screen: Trên màn hình" ,vie: "Trên màn hình" },
+{ eng: "Printed: Đã in" ,vie: "Đã in" },
+{ eng: "Another service: Dịch vụ khác" ,vie: "Dịch vụ khác" },
+{ eng: "Would you like a receipt: Bạn có muốn lấy giấy biên nhận khồn?" ,vie: "Bạn có muốn lấy giấy biên nhận khồn?" },
+{ eng: "Remove card: Rút thẻ" ,vie: "Rút thẻ" },
+{ eng: "Quit: Thoát " ,vie: "Thoát " },
+{ eng: "Check balance: Kiểm tra số dư" ,vie: "Kiểm tra số dư" },
+{ eng: "Transfer money: Chuyển tiền" ,vie: "Chuyển tiền" },
+   ]; 
+      var k = '<tbody>'
+    for(i = 0;i < mainObj.length; i++){
+        k+= '<tr>';
+        k+= '<td>' + mainObj[i].eng + '</td>';
+        k+= '<td>' + mainObj[i].vie + '</td>';
+        // k+= '<td>' + mainObj[i].status + '</td>';
+        k+= '</tr>';
+    }
+    k+='</tbody>';
+    document.getElementById('myTable').innerHTML = k;
+   //FILTER TABEL  
+  });
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                console.log(value);
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

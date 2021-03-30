@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      /* background-color: #008b8b; */
+      color: darkcyan;
+      box-sizing: border-box;
+    }
+
+    a {
+      margin: 0 auto;
+      padding: 0.5rem;
+      text-decoration: none;
+      width: 50%;
+      /* border: 1px solid; */
+      height: 7rem;
+      font-size: 0.7rem;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      background-color: darkcyan;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      width: 10%;
+      max-height: 100%;
+      margin-top: 0.5rem;
+      margin-left: 0.5rem;
+    }
+
+    h1 {
+      font-size: 1.3rem;
+      text-align: center;
+      margin-left: 10%;
+      color: white;
+      margin-top: 0.5rem;
+    }
+
+    .search {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 0.7rem;
+      margin-bottom: 1rem;
+      border: none;
+      height: 1.5rem;
+      width: 90%;
+      padding: 0.5rem;
+      border-radius: 3rem;
+    }
+
+    .sticky {
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+
+    .sticky+.content {
+      padding-top: 102px;
+    }
+
+    .container {
+      margin: 0 auto;
+      width: 95%;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .picture {
+      width: 90%;
+      max-height: 90%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header" id="myHeader">
+    <img class="logo" src="./images/finance.png" alt="" />
+    <h1>Từ điển chuyên ngành</h1>
+    <input class="search" type="text" id="myInput" placeholder="Search for work" />
+  </header>
+  <div class="container">
+    <a class="item" href="search.html">Từ điển ngành may <img class="picture" src="./images/sewing.jpg" alt="" /></a>
+    <a class="item" href="bank.html">Từ điển ngành ngân hàng
+      <img class="picture" src="./images/finance.png" alt="" /></a>
+  </div>
+  <div class="container">
+    <a class="item" href="mechanic.html">Từ điển ngành cơ khí
+      <img class="picture" src="./images/mechanic.jpg" alt="" /></a>
+    <a class="item" href="search.html">Từ điển ngành du lịch
+      <img class="picture" src="./images/travel.jpg" alt="" /></a>
+  </div>  
+    <tbody id="myTable"></tbody>
+
+  <script>
+    // function change_page() {
+    //   console.log("change_page");
+    //   $("#tbody").load("test.html #tbody");
+    // }
+    window.onscroll = function () {
+      myFunction();
+    };
+    var header = document.getElementById("myHeader");
+    var sticky = header.offsetTop;
+    function myFunction() {
+      if (window.pageYOffset > sticky) {
+        header.classList.add("sticky");
+      } else {
+        header.classList.remove("sticky");
+      }
+    }
+  
+    //dropdown filter function
+    $(document).ready(function () {
+      $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        console.log(value);
+        $("#myTable tr").filter(function () {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
